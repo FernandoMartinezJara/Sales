@@ -1,14 +1,15 @@
-﻿using Sales.Common.Models;
-using Sales.Domain.Models;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-using System.Web.Http.Description;
-
-namespace Sales.API.Controllers
+﻿namespace Sales.API.Controllers
 {
+    using Sales.Common.Models;
+    using Sales.Domain.Models;
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
+    using System.Net;
+    using System.Web.Http;
+    using System.Web.Http.Description;
+
     public class ProductsController : ApiController
     {
         private DataContext db = new DataContext();
@@ -36,6 +37,9 @@ namespace Sales.API.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutProduct(int id, Product product)
         {
+            product.IsAvailable = true;
+            product.PublishOn = DateTime.Now.ToUniversalTime();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

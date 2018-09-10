@@ -12,28 +12,60 @@ namespace Sales.ViewModels
 {
     public class ProductsViewModel : BaseViewModel
     {
-        private ApiService apiService;
-        private ObservableCollection<Product> products;
-        private bool isRefreshing;
+        #region Attributes
 
+        private ApiService apiService;
+        private bool isRefreshing;
+        public string Email { get; set; }
+        public string Password { get; set; }
+        
+        #endregion
+
+        #region Properties
+
+        private ObservableCollection<Product> products;
         public ObservableCollection<Product> Products
         {
             get { return this.products; }
             set { this.SetValue(ref this.products, value); }
         }
-
-
         public Boolean IsRefreshing
         {
             get { return this.isRefreshing; }
             set { this.SetValue(ref this.isRefreshing, value); }
         }
+        
+        #endregion
+
+        #region Constructors
 
         public ProductsViewModel()
         {
+            instance = this;
+            this.Email = "fernando@gmail.com";
+            this.Password = "123456";
             this.apiService = new ApiService();
             this.LoadProducts();
         }
+
+        #endregion
+
+        #region Singleton
+
+        private static ProductsViewModel instance;
+
+        public static ProductsViewModel GetInstance()
+        {
+            if (instance == null)
+            {
+                return new ProductsViewModel();
+            }
+            return instance;
+        }
+
+        #endregion
+
+        #region Methods
 
         private async void LoadProducts()
         {
@@ -55,10 +87,17 @@ namespace Sales.ViewModels
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
+            var token = await this.apiService.GetToken(
+                url,
+                this.Email,
+                this.Password);
+
             var response = await this.apiService.GetList<Product>(
                 url,
                 prefix,
-                controller);
+                controller,
+                token.TokenType,
+                token.AccessToken);
 
             if (!response.IsSuccess)
             {
@@ -74,6 +113,10 @@ namespace Sales.ViewModels
             Products = new ObservableCollection<Product>(list);
             this.IsRefreshing = false;
         }
+        
+        #endregion
+
+        #region Commands
 
         public ICommand RefreshCommand
         {
@@ -82,5 +125,9 @@ namespace Sales.ViewModels
                 return new RelayCommand(LoadProducts);
             }
         }
+
+        #endregion
+
+
     }
 }
