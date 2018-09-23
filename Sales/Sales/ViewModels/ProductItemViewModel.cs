@@ -2,6 +2,7 @@
 using Sales.Common.Models;
 using Sales.Helpers;
 using Sales.Services;
+using Sales.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,18 @@ namespace Sales.ViewModels
                 return new RelayCommand(DeleteProduct);
             }
         }
+
+
+        public ICommand EditProductCommand
+        {
+            get
+            {
+                return new RelayCommand(EditProduct);
+            }
+        }
+        #endregion
+
+        #region Methods
 
         private async void DeleteProduct()
         {
@@ -81,7 +94,8 @@ namespace Sales.ViewModels
 
             if (!response.IsSuccess)
             {
-                await Application.Current.MainPage.DisplayAlert(
+                await Application.Current.MainPage.DisplayAlert
+(
                     Languages.Error,
                     response.Message,
                     Languages.Accept);
@@ -96,6 +110,12 @@ namespace Sales.ViewModels
             }
 
 
+        }
+
+        private async void EditProduct()
+        {
+            MainViewModel.GetInstance().EditProduct = new EditProductViewModel(this);
+            await Application.Current.MainPage.Navigation.PushAsync(new EditProductPage());
         }
 
         #endregion
