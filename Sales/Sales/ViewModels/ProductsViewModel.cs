@@ -17,13 +17,16 @@ namespace Sales.ViewModels
 
         private ApiService apiService;
         private bool isRefreshing;
-        public string Email { get; set; }
-        public string Password { get; set; }
+        private string filter;
         private ObservableCollection<ProductItemViewModel> products;
 
         #endregion
 
         #region Properties
+
+        public string Email { get; set; }
+
+        public string Password { get; set; }
 
         public List<Product> MyProducts { get; set; }
 
@@ -32,10 +35,21 @@ namespace Sales.ViewModels
             get { return this.products; }
             set { this.SetValue(ref this.products, value); }
         }
+
         public Boolean IsRefreshing
         {
             get { return this.isRefreshing; }
             set { this.SetValue(ref this.isRefreshing, value); }
+        }
+
+        public string Filter
+        {
+            get { return this.filter; }
+            set
+            {
+                this.filter = value;
+                this.RefreshList();
+            }
         }
 
         #endregion
@@ -64,6 +78,26 @@ namespace Sales.ViewModels
                 return new ProductsViewModel();
             }
             return instance;
+        }
+
+        #endregion
+        
+        #region Commands
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return new RelayCommand(LoadProducts);
+            }
+        }
+
+        public ICommand SearchCommad
+        {
+            get
+            {
+                return new RelayCommand(RefreshList);
+            }
         }
 
         #endregion
@@ -122,36 +156,46 @@ namespace Sales.ViewModels
 
         public void RefreshList()
         {
-            var myListProductItemViewModel = MyProducts.Select(p => new ProductItemViewModel
+            if (string.IsNullOrEmpty(Filter))
             {
-                Description = p.Description,
-                ImageArray = p.ImageArray,
-                ImagePath = p.ImagePath,
-                IsAvailable = p.IsAvailable,
-                Price = p.Price,
-                ProductId = p.ProductId,
-                PublishOn = p.PublishOn,
-                Remarks = p.Remarks
-            });
+                var myListProductItemViewModel = this.MyProducts.Select(p => new ProductItemViewModel
+                {
+                    Description = p.Description,
+                    ImageArray = p.ImageArray,
+                    ImagePath = p.ImagePath,
+                    IsAvailable = p.IsAvailable,
+                    Price = p.Price,
+                    ProductId = p.ProductId,
+                    PublishOn = p.PublishOn,
+                    Remarks = p.Remarks
+                });
 
-            this.Products = new ObservableCollection<ProductItemViewModel>(
-                myListProductItemViewModel.OrderBy(p => p.Description));
-        }
-
-        #endregion
-
-        #region Commands
-
-        public ICommand RefreshCommand
-        {
-            get
-            {
-                return new RelayCommand(LoadProducts);
+                this.Products = new ObservableCollection<ProductItemViewModel>(
+                    myListProductItemViewModel.OrderBy(p => p.Description));
             }
+            else
+            {
+                var myListProductItemViewModel = this.MyProducts.Select(p => new ProductItemViewModel
+                {
+                    Description = p.Description,
+                    ImageArray = p.ImageArray,
+                    ImagePath = p.ImagePath,
+                    IsAvailable = p.IsAvailable,
+                    Price = p.Price,
+                    ProductId = p.ProductId,
+                    PublishOn = p.PublishOn,
+                    Remarks = p.Remarks
+                }).Where(p => p.Description.ToLower().Contains(this.Filter.ToLower())).ToList();
+
+                this.Products = new ObservableCollection<ProductItemViewModel>(
+                    myListProductItemViewModel.OrderBy(p => p.Description));
+
+            }
+            
+           
         }
 
         #endregion
-
 
     }
 }
