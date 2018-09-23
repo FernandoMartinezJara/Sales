@@ -1,10 +1,12 @@
 ﻿namespace Sales.API.Controllers
 {
+    using Sales.API.Helpers;
     using Sales.Common.Models;
     using Sales.Domain.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.IO;
     using System.Linq;
     using System.Net;
     using System.Web.Http;
@@ -75,9 +77,26 @@
         [ResponseType(typeof(Product))]
         public IHttpActionResult PostProduct(Product product)
         {
+            product.IsAvailable = true;
+            product.PublishOn = DateTime.Now.ToUniversalTime();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
+            }
+
+            if (product.ImageArray != null && product.ImageArray.Length > 0)
+            {
+                var stream = new MemoryStream(product.ImageArray);
+                var guid = Guid.NewGuid().ToString();
+                var file = $"{guid}.jpg";
+                var folder = "~/Content/Products";
+                var fullPath = $"{folder}/{file}";
+                var response = FilesHelper.UploadPhoto(stream, folder, file);
+                if (response)
+                {
+                    product.ImagePath = fullPath;
+                }
             }
 
             db.Products.Add(product);
