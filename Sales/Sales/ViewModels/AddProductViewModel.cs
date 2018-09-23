@@ -195,7 +195,14 @@
                 ImageArray = imageArray
             };
 
-            var response = await this.apiService.Post(url, prefix, controller, token.TokenType, token.AccessToken, product);
+            var response = await this.apiService.Post(
+                url, 
+                prefix, 
+                controller, 
+                token.TokenType, 
+                token.AccessToken, 
+                product);
+
             if (!response.IsSuccess)
             {
                 this.IsRunning = false;
@@ -209,9 +216,17 @@
 
             var newProduct = (Product)response.Result;
             var viewModel = ProductsViewModel.GetInstance();
-            viewModel.Products.Add(newProduct);
-            //viewModel.Products = viewModel.Products.OrderBy(p => p.Description);
-
+            viewModel.Products.Add(new ProductItemViewModel
+            {
+                Description = newProduct.Description,
+                ImageArray = newProduct.ImageArray,
+                ImagePath = newProduct.ImagePath,
+                IsAvailable = newProduct.IsAvailable,
+                Price = newProduct.Price,
+                ProductId = newProduct.ProductId,
+                PublishOn = newProduct.PublishOn,
+                Remarks = newProduct.Remarks
+            });
             this.IsRunning = false;
             this.IsEnabled = true;
             await Application.Current.MainPage.Navigation.PopAsync();

@@ -23,6 +23,17 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            
+                            <ViewCell.ContextActions>
+                                <MenuItem 
+                                    Command="{Binding EditProductCommand}"
+                                    Text="{i18n:Translate Edit}" />
+                                <MenuItem 
+                                    Command="{Binding DeleteProductCommand}"
+                                    Text="{i18n:Translate Delete}" 
+                                    IsDestructive="True"/>
+                            </ViewCell.ContextActions>
+                           
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>

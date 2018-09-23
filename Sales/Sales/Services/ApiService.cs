@@ -62,6 +62,40 @@
             };
         }
 
+        public async Task<Response> Delete(string urlBase, string prefix, string controller, string tokenType, string accessToken, int id)
+        {
+            try
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(urlBase);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(tokenType, accessToken);
+                var url = $"{prefix}{controller}/{id}";
+                var response = await client.DeleteAsync(url);
+                var answer = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new Response
+                    {
+                        IsSuccess = false,
+                        Message = answer,
+                    };
+                }
+
+                return new Response
+                {
+                    IsSuccess = true,
+                };
+            }
+            catch (Exception ex)
+            {
+                return new Response
+                {
+                    IsSuccess = false,
+                    Message = ex.Message,
+                };
+            }
+        }
+
         public async Task<Response> GetList<T>(string urlBase, string prefix, string controller)
         {
             try
@@ -134,7 +168,7 @@
                 };
             }
         }
-
+        
         public async Task<Response> Post<T>(string urlBase, string prefix, string controller, string tokenType, string accessToken, T model)
         {
             try

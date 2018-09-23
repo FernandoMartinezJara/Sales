@@ -5,6 +5,7 @@ using Sales.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -18,13 +19,13 @@ namespace Sales.ViewModels
         private bool isRefreshing;
         public string Email { get; set; }
         public string Password { get; set; }
-        
+        private ObservableCollection<ProductItemViewModel> products;
+
         #endregion
 
         #region Properties
 
-        private ObservableCollection<Product> products;
-        public ObservableCollection<Product> Products
+        public ObservableCollection<ProductItemViewModel> Products
         {
             get { return this.products; }
             set { this.SetValue(ref this.products, value); }
@@ -34,7 +35,7 @@ namespace Sales.ViewModels
             get { return this.isRefreshing; }
             set { this.SetValue(ref this.isRefreshing, value); }
         }
-        
+
         #endregion
 
         #region Constructors
@@ -110,10 +111,22 @@ namespace Sales.ViewModels
             }
 
             var list = (List<Product>)response.Result;
-            Products = new ObservableCollection<Product>(list);
+            var myList = list.Select(p => new ProductItemViewModel
+            {
+                Description = p.Description,
+                ImageArray = p.ImageArray,
+                ImagePath = p.ImagePath,
+                IsAvailable = p.IsAvailable,
+                Price = p.Price,
+                ProductId = p.ProductId,
+                PublishOn = p.PublishOn,
+                Remarks = p.Remarks
+            });
+
+            Products = new ObservableCollection<ProductItemViewModel>(myList);
             this.IsRefreshing = false;
         }
-        
+
         #endregion
 
         #region Commands
