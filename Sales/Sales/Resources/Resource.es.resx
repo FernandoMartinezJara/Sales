@@ -204,7 +204,7 @@
   <data name="Login" xml:space="preserve">
     <value>Inicio de sesión</value>
   </data>
-  <data name="EMail" xml:space="preserve">
+  <data name="Email" xml:space="preserve">
     <value>Correo electrónico</value>
   </data>
   <data name="EmailPlaceHolder" xml:space="preserve">
@@ -285,7 +285,7 @@
   <data name="LastNameError" xml:space="preserve">
     <value>Debe escribir apellidos</value>
   </data>
-  <data name="EMailError" xml:space="preserve">
+  <data name="EmailError" xml:space="preserve">
     <value>Hay que introducir una dirección de correo válida.</value>
   </data>
   <data name="PhoneError" xml:space="preserve">

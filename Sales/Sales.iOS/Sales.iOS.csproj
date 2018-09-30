@@ -177,4 +177,16 @@
   <ItemGroup>
     <BundleResource Include="Resources\ic_chevron_right.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\salebanner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\FacebookLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\InstagramLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\TwitterLogo.png" />
+  </ItemGroup>
 </Project>

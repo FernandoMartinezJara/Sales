@@ -204,8 +204,8 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="EMail" xml:space="preserve">
-    <value>EMail</value>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="EmailPlaceHolder" xml:space="preserve">
     <value>Enter your email...</value>
@@ -285,7 +285,7 @@
   <data name="LastNameError" xml:space="preserve">
     <value>You must enter a last name.</value>
   </data>
-  <data name="EMailError" xml:space="preserve">
+  <data name="EmailError" xml:space="preserve">
     <value>You must enter a valid email.</value>
   </data>
   <data name="PhoneError" xml:space="preserve">

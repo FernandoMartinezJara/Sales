@@ -1,17 +1,19 @@
 using Sales.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Sales.ViewModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Sales
 {
     public partial class App : Application
 	{
+       
 		public App ()
 		{
 			InitializeComponent();
-
-			MainPage = new NavigationPage(new ProductsPage());
+            MainViewModel.GetInstance().Login = new LoginViewModel();
+			MainPage = new NavigationPage(new LoginPage());
 		}
 
 		protected override void OnStart ()

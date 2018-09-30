@@ -196,20 +196,20 @@ namespace Sales.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EMail.
+        ///   Looks up a localized string similar to Email.
         /// </summary>
-        public static string EMail {
+        public static string Email {
             get {
-                return ResourceManager.GetString("EMail", resourceCulture);
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to You must enter a valid email..
         /// </summary>
-        public static string EMailError {
+        public static string EmailError {
             get {
-                return ResourceManager.GetString("EMailError", resourceCulture);
+                return ResourceManager.GetString("EmailError", resourceCulture);
             }
         }
         

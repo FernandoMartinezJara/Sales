@@ -151,9 +151,9 @@
             get { return Resource.Login; }
         }
 
-        public static string EMail
+        public static string Email
         {
-            get { return Resource.EMail; }
+            get { return Resource.Email; }
         }
 
         public static string EmailPlaceHolder
@@ -286,9 +286,9 @@
             get { return Resource.LastNameError; }
         }
 
-        public static string EMailError
+        public static string EmailError
         {
-            get { return Resource.EMailError; }
+            get { return Resource.EmailError; }
         }
 
         public static string PhoneError
