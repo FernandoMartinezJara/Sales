@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Sales.Helpers;
+using Sales.Services;
+using Sales.Views;
 using System;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -8,6 +10,12 @@ namespace Sales.ViewModels
 {
     public class LoginViewModel :BaseViewModel
     {
+        #region Services
+
+        private ApiService apiService;
+
+        #endregion
+
         #region Attributes
 
         private bool isEnabled;
@@ -39,6 +47,7 @@ namespace Sales.ViewModels
         {
             this.IsRemembered = true;
             this.IsEnabled = true;
+            this.apiService = new ApiService();
         }
 
         #endregion
@@ -52,6 +61,9 @@ namespace Sales.ViewModels
 
         private async void Login()
         {
+            this.IsRunning = true;
+            this.IsEnabled = false;
+
             if (string.IsNullOrEmpty(this.Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
@@ -69,6 +81,38 @@ namespace Sales.ViewModels
                     Languages.Cancel);
                 return;
             }
+
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    connection.Message,
+                    Languages.Accept);
+                return;
+            }
+
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var token = await this.apiService.GetToken(url, this.Email, this.Password);
+
+            if (token == null || string.IsNullOrEmpty(token.AccessToken))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    Languages.SomethingWrong,
+                    Languages.Accept);
+                return;
+            }
+
+            Settings.TokenType = token.TokenType;
+            Settings.AccessToken = token.AccessToken;
+            Settings.IsRemebered = this.IsRemembered;
+
+            MainViewModel.GetInstance().Products = new ProductsViewModel();
+            Application.Current.MainPage = new ProductsPage();
+            this.IsRunning = false;
+            this.IsEnabled = true;
         }
 
         #endregion

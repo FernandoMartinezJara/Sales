@@ -124,17 +124,12 @@ namespace Sales.ViewModels
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var token = await this.apiService.GetToken(
-                url,
-                this.Email,
-                this.Password);
-
             var response = await this.apiService.GetList<Product>(
                 url,
                 prefix,
                 controller,
-                token.TokenType,
-                token.AccessToken);
+                Settings.TokenType,
+                Settings.AccessToken);
 
             if (!response.IsSuccess)
             {
