@@ -35,7 +35,7 @@ namespace Sales.ViewModels
         public Product Product
         {
             get { return this.product; }
-            set { this.SetValue(ref this.product, value);  }
+            set { this.SetValue(ref this.product, value); }
         }
 
         public bool IsRunning
@@ -172,11 +172,6 @@ namespace Sales.ViewModels
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var token = await this.apiService.GetToken(
-                url,
-                "fernando@gmail.com",
-                "123456");
-
             byte[] imageArray = null;
             if (this.file != null)
             {
@@ -188,8 +183,8 @@ namespace Sales.ViewModels
                 url,
                 prefix,
                 controller,
-                token.TokenType,
-                token.AccessToken,
+                Settings.TokenType,
+                Settings.AccessToken,
                 this.Product,
                 this.Product.ProductId);
 
@@ -262,17 +257,12 @@ namespace Sales.ViewModels
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var token = await this.apiService.GetToken(
-                url,
-                "fernando@gmail.com",
-                "123456");
-
             var response = await this.apiService.Delete(
               url,
               prefix,
               controller,
-              token.TokenType,
-              token.AccessToken,
+              Settings.TokenType,
+              Settings.AccessToken,
               this.Product.ProductId);
 
             if (!response.IsSuccess)

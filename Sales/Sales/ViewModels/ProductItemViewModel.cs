@@ -79,17 +79,12 @@ namespace Sales.ViewModels
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var token = await this.apiService.GetToken(
-                url,
-                "fernando@gmail.com",
-                "123456");
-
             var response = await this.apiService.Delete(
               url,
               prefix,
               controller,
-              token.TokenType,
-              token.AccessToken,
+              Settings.TokenType,
+              Settings.AccessToken,
               this.ProductId);
 
             if (!response.IsSuccess)
@@ -108,8 +103,6 @@ namespace Sales.ViewModels
             {
                 productViewModel.Products.Remove(deletedProduct);
             }
-
-
         }
 
         private async void EditProduct()

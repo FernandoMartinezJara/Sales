@@ -177,11 +177,6 @@
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
             var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var token = await this.apiService.GetToken(
-                url,
-                "fernando@gmail.com",
-                "123456");
-
             byte[] imageArray = null;
             if (this.file != null)
             {
@@ -198,9 +193,9 @@
             var response = await this.apiService.Post(
                 url, 
                 prefix, 
-                controller, 
-                token.TokenType, 
-                token.AccessToken, 
+                controller,
+                Settings.TokenType,
+                Settings.AccessToken, 
                 product);
 
             if (!response.IsSuccess)

@@ -24,10 +24,6 @@ namespace Sales.ViewModels
 
         #region Properties
 
-        public string Email { get; set; }
-
-        public string Password { get; set; }
-
         public List<Product> MyProducts { get; set; }
 
         public ObservableCollection<ProductItemViewModel> Products
@@ -59,8 +55,6 @@ namespace Sales.ViewModels
         public ProductsViewModel()
         {
             instance = this;
-            this.Email = "fernando@gmail.com";
-            this.Password = "123456";
             this.apiService = new ApiService();
             this.LoadProducts();
         }
@@ -186,8 +180,6 @@ namespace Sales.ViewModels
                     myListProductItemViewModel.OrderBy(p => p.Description));
 
             }
-            
-           
         }
 
         #endregion
