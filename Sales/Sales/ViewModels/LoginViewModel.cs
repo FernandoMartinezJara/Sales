@@ -48,6 +48,8 @@ namespace Sales.ViewModels
             this.IsRemembered = true;
             this.IsEnabled = true;
             this.apiService = new ApiService();
+            this.Email = "fernando@gmail.com";
+            this.Password = "123456";
         }
 
         #endregion
@@ -110,7 +112,7 @@ namespace Sales.ViewModels
             Settings.IsRemebered = this.IsRemembered;
 
             MainViewModel.GetInstance().Products = new ProductsViewModel();
-            Application.Current.MainPage = new ProductsPage();
+            Application.Current.MainPage = new MasterPage();
             this.IsRunning = false;
             this.IsEnabled = true;
         }

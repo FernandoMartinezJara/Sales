@@ -138,8 +138,7 @@ namespace Sales.ViewModels
             MyProducts = (List<Product>)response.Result;
 
             RefreshList();
-
-           
+            
             this.IsRefreshing = false;
         }
 

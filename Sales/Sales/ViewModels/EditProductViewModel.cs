@@ -213,7 +213,7 @@ namespace Sales.ViewModels
 
             this.IsRunning = false;
             this.IsEnabled = true;
-            await Application.Current.MainPage.Navigation.PopAsync();
+            await App.Navigator.PopAsync();
         }
 
         public ICommand DeleteCommand
@@ -283,7 +283,7 @@ namespace Sales.ViewModels
             productViewModel.RefreshList();
             this.IsRunning = false;
             this.IsEnabled = true;
-            await Application.Current.MainPage.Navigation.PopAsync();
+            await App.Navigator.PopAsync();
 
         }
 
