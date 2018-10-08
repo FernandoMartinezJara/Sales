@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -16,6 +17,7 @@ namespace Sales.ViewModels
         #region Attributes
 
         private ApiService apiService;
+        private DataService dataService;
         private bool isRefreshing;
         private string filter;
         private ObservableCollection<ProductItemViewModel> products;
@@ -56,6 +58,7 @@ namespace Sales.ViewModels
         {
             instance = this;
             this.apiService = new ApiService();
+            this.dataService = new DataService();
             this.LoadProducts();
         }
 
@@ -104,15 +107,47 @@ namespace Sales.ViewModels
 
             var connection = await this.apiService.CheckConnection();
 
-            if (!connection.IsSuccess)
+            if (connection.IsSuccess)
+            {
+                var answer = await LoadProductsFromAPI();
+                if (answer)
+                {
+                    this.SaveProductsToDB();
+                }
+            }
+            else
+            {
+                await this.LoadProductsFromDB();
+            }
+
+            if (MyProducts == null && MyProducts.Count == 0)
             {
                 this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    connection.Message,
+                    Languages.Error, 
+                    Languages.NoProductsMessage, 
                     Languages.Accept);
                 return;
             }
+
+            this.RefreshList();
+            
+            this.IsRefreshing = false;
+        }
+
+        private async Task LoadProductsFromDB()
+        {
+            this.MyProducts = await dataService.GetAllProducts();
+        }
+
+        private async Task SaveProductsToDB()
+        {
+            await this.dataService.DeleteAllProducts();
+            dataService.Insert(this.MyProducts);
+        }
+
+        private async Task<bool> LoadProductsFromAPI()
+        {
 
             var url = Application.Current.Resources["UrlAPI"].ToString();
             var prefix = Application.Current.Resources["UrlPrefix"].ToString();
@@ -127,19 +162,11 @@ namespace Sales.ViewModels
 
             if (!response.IsSuccess)
             {
-                this.IsRefreshing = false;
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error,
-                    response.Message,
-                    Languages.Accept);
-                return;
+                return false;
             }
 
             MyProducts = (List<Product>)response.Result;
-
-            RefreshList();
-            
-            this.IsRefreshing = false;
+            return true;
         }
 
         public void RefreshList()

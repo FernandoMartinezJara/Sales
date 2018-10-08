@@ -316,5 +316,10 @@
             get { return Resource.RegisterConfirmation; }
         }
 
+        public static string Categories
+        {
+            get { return Resource.Categories; }
+        }
+
     }
 }

@@ -115,6 +115,15 @@ namespace Sales.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        public static string Categories {
+            get {
+                return ResourceManager.GetString("Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to touch the image to change.
         /// </summary>
         public static string ChangeImage {
