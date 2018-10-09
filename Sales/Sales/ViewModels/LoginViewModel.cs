@@ -61,6 +61,17 @@ namespace Sales.ViewModels
             get { return new RelayCommand(Login); }
         }
 
+        public ICommand RegisterCommand
+        {
+            get { return new RelayCommand(Register); }
+        }
+
+        private async void Register()
+        {
+            MainViewModel.GetInstance().Register = new RegisterViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+
         private async void Login()
         {
             this.IsRunning = true;

@@ -17,6 +17,7 @@
         public AddProductViewModel AddProduct { get; set; }
         public EditProductViewModel EditProduct { get; set; }
         public ObservableCollection<MenuItemViewModel> Menu { get; set; }
+        public RegisterViewModel Register { get; set; }
         #endregion
 
         #region Commands
