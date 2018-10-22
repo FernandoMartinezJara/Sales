@@ -12,6 +12,7 @@
     {
         public IHttpActionResult PostUser(UserRequest userRequest)
         {
+
             if (userRequest.ImageArray != null && userRequest.ImageArray.Length > 0)
             {
                 var stream = new MemoryStream(userRequest.ImageArray);
