@@ -129,8 +129,9 @@
                         VerticalOptions="CenterAndExpand">
 
                     </ActivityIndicator>
+                </Grid>
 
-                    <Button
+                <Button
                         BackgroundColor="Navy"
                         BorderRadius="23"
                         Command="{Binding SaveCommand}"
@@ -138,8 +139,7 @@
                         IsEnabled="{Binding IsEnabled}"
                         Text="{i18n:Translate Save}"
                         TextColor="White">
-                    </Button>
-                </Grid>
+                </Button>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
