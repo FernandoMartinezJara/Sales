@@ -33,7 +33,7 @@ namespace Sales.ViewModels
             {
                 Settings.AccessToken = string.Empty;
                 Settings.TokenType = string.Empty;
-                Settings.IsRemebered = false;
+                Settings.IsRemembered = false;
                 MainViewModel.GetInstance().Login = new LoginViewModel();
                 Application.Current.MainPage = new NavigationPage(new LoginPage());
             }

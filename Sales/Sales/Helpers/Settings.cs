@@ -17,12 +17,25 @@
 
         private const string tokenType = "TokenType";
         private const string accessToken = "AccessToken";
-        private const string isRemebered = "IsRemebered";
+        private const string userASP = "UserASP";
+        private const string isRemembered = "IsRemebered";
 
         private static readonly string StringDefault = string.Empty;
         private static readonly bool booleanDefault = false;
 
         #endregion
+
+        public static string UserASP
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(userASP, StringDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(userASP, value);
+            }
+        }
 
         public static string TokenType
         {
@@ -36,17 +49,18 @@
             }
         }
 
-        public static bool IsRemebered
+        public static bool IsRemembered
         {
             get
             {
-                return AppSettings.GetValueOrDefault(isRemebered, booleanDefault);
+                return AppSettings.GetValueOrDefault(isRemembered, booleanDefault);
             }
             set
             {
-                AppSettings.AddOrUpdateValue(isRemebered, value);
+                AppSettings.AddOrUpdateValue(isRemembered, value);
             }
         }
+
         public static string AccessToken
         {
             get

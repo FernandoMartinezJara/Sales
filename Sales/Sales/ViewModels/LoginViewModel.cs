@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
+using Sales.Common.Models;
 using Sales.Helpers;
 using Sales.Services;
 using Sales.Views;
@@ -120,7 +122,18 @@ namespace Sales.ViewModels
 
             Settings.TokenType = token.TokenType;
             Settings.AccessToken = token.AccessToken;
-            Settings.IsRemebered = this.IsRemembered;
+            Settings.IsRemembered = this.IsRemembered;
+
+            //Trae Atributos de usuarios y los guarda en persistencia vía Settings
+            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+            var controller = Application.Current.Resources["UrlUsersController"].ToString();
+            var response = await this.apiService.GetUser(url, prefix, $"{controller}/GetUser", this.Email, token.TokenType, token.AccessToken);
+            if (response.IsSuccess)
+            {
+                var userASP = (MyUserASP)response.Result;
+                MainViewModel.GetInstance().UserASP = userASP;
+                Settings.UserASP = JsonConvert.SerializeObject(userASP);
+            }
 
             MainViewModel.GetInstance().Products = new ProductsViewModel();
             Application.Current.MainPage = new MasterPage();

@@ -9,6 +9,7 @@
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Models;
+    using Claim = System.Security.Claims.Claim;
 
     public class UsersHelper : IDisposable
     {
