@@ -15,7 +15,7 @@ namespace Sales.Droid
         Label = "Sales", 
         Icon = "@drawable/ic_launcher", 
         Theme = "@style/MainTheme", 
-        MainLauncher = true, 
+        MainLauncher = false, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
