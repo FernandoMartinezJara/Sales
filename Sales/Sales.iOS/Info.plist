@@ -34,21 +34,22 @@
 	<string>Sales</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
-  <key>CFBundleLocalizations</key>
-  <array>
-    <string>es</string>
-    <string>pt</string>
-  </array>
-  <key>CFBundleDevelopmentRegion</key>
-  <string>en</string>
-  <!--PERMISOS CAMARA-->
-  <key>NSCameraUsageDescription</key>
-  <string>This app needs access to the camera to take photos.</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>This app needs access t photos.</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>This app needs access to microphone.</string>
-  <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>This app needs access to the photo gallery.</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>es</string>
+		<string>pt</string>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs access to the camera to take photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app needs access t photos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs access to microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs access to the photo gallery.</string>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImages.launchimage</string>
 </dict>
 </plist>

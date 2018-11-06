@@ -10,7 +10,7 @@ using Xamarin.Forms;
 
 namespace Sales.ViewModels
 {
-    public class LoginViewModel :BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
         #region Services
 
@@ -43,7 +43,7 @@ namespace Sales.ViewModels
 
         #endregion
 
-            #region Constructors
+        #region Constructors
 
         public LoginViewModel()
         {
@@ -63,17 +63,6 @@ namespace Sales.ViewModels
             get { return new RelayCommand(Login); }
         }
 
-        public ICommand RegisterCommand
-        {
-            get { return new RelayCommand(Register); }
-        }
-
-        private async void Register()
-        {
-            MainViewModel.GetInstance().Register = new RegisterViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
-        }
-
         private async void Login()
         {
             this.IsRunning = true;
@@ -82,8 +71,8 @@ namespace Sales.ViewModels
             if (string.IsNullOrEmpty(this.Email))
             {
                 await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error, 
-                    Languages.EmailValidation, 
+                    Languages.Error,
+                    Languages.EmailValidation,
                     Languages.Cancel);
                 return;
             }
@@ -139,6 +128,89 @@ namespace Sales.ViewModels
             Application.Current.MainPage = new MasterPage();
             this.IsRunning = false;
             this.IsEnabled = true;
+        }
+
+        public ICommand RegisterCommand
+        {
+            get { return new RelayCommand(Register); }
+        }
+
+        private async void Register()
+        {
+            MainViewModel.GetInstance().Register = new RegisterViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new RegisterPage());
+        }
+
+        public ICommand LoginFacebookCommand
+        {
+            get
+            {
+                return new RelayCommand(LoginFacebook);
+            }
+        }
+
+        private async void LoginFacebook()
+        {
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    connection.Message,
+                    Languages.Accept);
+                return;
+            }
+
+            await Application.Current.MainPage.Navigation.PushAsync(new LoginFacebookPage());
+        }
+
+        public ICommand LoginInstagramCommand
+        {
+            get
+            {
+                return new RelayCommand(LoginInstagram);
+            }
+        }
+
+        private async void LoginInstagram()
+        {
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    connection.Message,
+                    Languages.Accept);
+                return;
+            }
+
+            await Application.Current.MainPage.Navigation.PushAsync(new LoginInstagramPage());
+        }
+
+        public ICommand LoginTwitterCommand
+        {
+            get
+            {
+                return new RelayCommand(LoginTwitter);
+            }
+        }
+
+        private async void LoginTwitter()
+        {
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    connection.Message,
+                    Languages.Accept);
+                return;
+            }
+
+            await Application.Current.MainPage.Navigation.PushAsync(new LoginTwitterPage());
         }
 
         #endregion
