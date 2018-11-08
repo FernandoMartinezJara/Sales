@@ -22,7 +22,6 @@ namespace Sales.ViewModels
             MainViewModel.GetInstance().Products = new ProductsViewModel();
             await App.Navigator.PushAsync(new ProductsPage());
 
-
         }
         #endregion
     }
