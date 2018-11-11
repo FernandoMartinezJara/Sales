@@ -10,6 +10,8 @@
         [Key]
         public int ProductId { get; set; }
 
+        public int CategoryId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Description { get; set; }

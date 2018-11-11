@@ -335,7 +335,5 @@
         {
             get { return Resource.CategoryError; }
         }
-
-
     }
 }

@@ -13,16 +13,16 @@
     public class CategoriesViewModel : BaseViewModel
     {
         #region Attributes
+
         private string filter;
-
         private ApiService apiService;
-
         private bool isRefreshing;
-
         private ObservableCollection<CategoryItemViewModel> categories;
+
         #endregion
 
         #region Properties
+
         public string Filter
         {
             get { return this.filter; }
@@ -59,6 +59,7 @@
         #endregion
 
         #region Methods
+
         private async void LoadCategories()
         {
             this.IsRefreshing = true;

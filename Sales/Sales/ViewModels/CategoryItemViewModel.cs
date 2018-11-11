@@ -1,5 +1,4 @@
-﻿
-namespace Sales.ViewModels
+﻿namespace Sales.ViewModels
 {
     using System.Windows.Input;
     using Common.Models;
@@ -19,7 +18,7 @@ namespace Sales.ViewModels
 
         private async void GotoCategory()
         {
-            MainViewModel.GetInstance().Products = new ProductsViewModel();
+            MainViewModel.GetInstance().Products = new ProductsViewModel(this);
             await App.Navigator.PushAsync(new ProductsPage());
 
         }

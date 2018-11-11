@@ -9,6 +9,7 @@
     using System.IO;
     using System.Linq;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Http;
     using System.Web.Http.Description;
 
@@ -25,15 +26,15 @@
 
         // GET: api/Products/5
         [ResponseType(typeof(Product))]
-        public IHttpActionResult GetProduct(int id)
+        public async Task<IHttpActionResult> GetProductAsync(int id)
         {
-            Product product = db.Products.Find(id);
-            if (product == null)
+           var products = await db.Products.Where(p => p.Category.CategoryId == id).ToListAsync();
+            if (products == null)
             {
                 return NotFound();
             }
 
-            return Ok(product);
+            return Ok(products);
         }
 
         // PUT: api/Products/5

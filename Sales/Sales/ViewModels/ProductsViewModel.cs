@@ -50,13 +50,16 @@ namespace Sales.ViewModels
             }
         }
 
+        public Category Category { get; set; }
+
         #endregion
 
         #region Constructors
 
-        public ProductsViewModel()
+        public ProductsViewModel(Category category)
         {
             instance = this;
+            this.Category = category;
             this.apiService = new ApiService();
             this.dataService = new DataService();
             this.LoadProducts();
@@ -67,13 +70,10 @@ namespace Sales.ViewModels
         #region Singleton
 
         private static ProductsViewModel instance;
+        private CategoryItemViewModel categoryItemViewModel;
 
         public static ProductsViewModel GetInstance()
         {
-            if (instance == null)
-            {
-                return new ProductsViewModel();
-            }
             return instance;
         }
 
@@ -101,39 +101,83 @@ namespace Sales.ViewModels
 
         #region Methods
 
+        //private async void LoadProducts()
+        //{
+        //    this.IsRefreshing = true;
+
+        //    var connection = await this.apiService.CheckConnection();
+
+        //    if (connection.IsSuccess)
+        //    {
+        //        var answer = await LoadProductsFromAPI();
+        //        if (answer)
+        //        {
+        //            this.SaveProductsToDB();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        await this.LoadProductsFromDB();
+        //    }
+
+        //    if (MyProducts == null && MyProducts.Count == 0)
+        //    {
+        //        this.IsRefreshing = false;
+        //        await Application.Current.MainPage.DisplayAlert(
+        //            Languages.Error, 
+        //            Languages.NoProductsMessage, 
+        //            Languages.Accept);
+        //        return;
+        //    }
+
+        //    this.RefreshList();
+
+        //    this.IsRefreshing = false;
+        //}
+
         private async void LoadProducts()
         {
             this.IsRefreshing = true;
 
             var connection = await this.apiService.CheckConnection();
-
-            if (connection.IsSuccess)
-            {
-                var answer = await LoadProductsFromAPI();
-                if (answer)
-                {
-                    this.SaveProductsToDB();
-                }
-            }
-            else
-            {
-                await this.LoadProductsFromDB();
-            }
-
-            if (MyProducts == null && MyProducts.Count == 0)
+            if (!connection.IsSuccess)
             {
                 this.IsRefreshing = false;
-                await Application.Current.MainPage.DisplayAlert(
-                    Languages.Error, 
-                    Languages.NoProductsMessage, 
-                    Languages.Accept);
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
                 return;
             }
 
-            this.RefreshList();
-            
+            var answer = await this.LoadProductsFromAPI();
+            if (answer)
+            {
+                this.RefreshList();
+            }
+
             this.IsRefreshing = false;
         }
+
+        private async Task<bool> LoadProductsFromAPI()
+        {
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+            var controller = Application.Current.Resources["UrlProductsController"].ToString();
+            var response = await this.apiService.GetList<Product>(
+                url, 
+                prefix, 
+                controller, 
+                this.Category.CategoryId,
+                Settings.TokenType, 
+                Settings.AccessToken);
+
+            if (!response.IsSuccess)
+            {
+                return false;
+            }
+
+            this.MyProducts = (List<Product>)response.Result;
+            return true;
+        }
+
 
         private async Task LoadProductsFromDB()
         {
@@ -146,28 +190,28 @@ namespace Sales.ViewModels
             dataService.Insert(this.MyProducts);
         }
 
-        private async Task<bool> LoadProductsFromAPI()
-        {
+        //private async Task<bool> LoadProductsFromAPI()
+        //{
 
-            var url = Application.Current.Resources["UrlAPI"].ToString();
-            var prefix = Application.Current.Resources["UrlPrefix"].ToString();
-            var controller = Application.Current.Resources["UrlProductsController"].ToString();
+        //    var url = Application.Current.Resources["UrlAPI"].ToString();
+        //    var prefix = Application.Current.Resources["UrlPrefix"].ToString();
+        //    var controller = Application.Current.Resources["UrlProductsController"].ToString();
 
-            var response = await this.apiService.GetList<Product>(
-                url,
-                prefix,
-                controller,
-                Settings.TokenType,
-                Settings.AccessToken);
+        //    var response = await this.apiService.GetList<Product>(
+        //        url,
+        //        prefix,
+        //        controller,
+        //        Settings.TokenType,
+        //        Settings.AccessToken);
 
-            if (!response.IsSuccess)
-            {
-                return false;
-            }
+        //    if (!response.IsSuccess)
+        //    {
+        //        return false;
+        //    }
 
-            MyProducts = (List<Product>)response.Result;
-            return true;
-        }
+        //    MyProducts = (List<Product>)response.Result;
+        //    return true;
+        //}
 
         public void RefreshList()
         {
@@ -182,7 +226,9 @@ namespace Sales.ViewModels
                     Price = p.Price,
                     ProductId = p.ProductId,
                     PublishOn = p.PublishOn,
-                    Remarks = p.Remarks
+                    Remarks = p.Remarks,
+                    CategoryId = p.CategoryId,
+                    UserId = p.UserId
                 });
 
                 this.Products = new ObservableCollection<ProductItemViewModel>(
@@ -199,7 +245,9 @@ namespace Sales.ViewModels
                     Price = p.Price,
                     ProductId = p.ProductId,
                     PublishOn = p.PublishOn,
-                    Remarks = p.Remarks
+                    Remarks = p.Remarks,
+                    CategoryId = p.CategoryId,
+                    UserId = p.UserId
                 }).Where(p => p.Description.ToLower().Contains(this.Filter.ToLower())).ToList();
 
                 this.Products = new ObservableCollection<ProductItemViewModel>(
