@@ -31,6 +31,10 @@ namespace Sales.Droid
             ImageCircleRenderer.Init();
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            //inicializo Mapas
+            global::Xamarin.FormsMaps.Init(this, bundle);
+
             LoadApplication(new App());
         }
 
